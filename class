@@ -1,0 +1,34 @@
+public class LeadController
+{
+    @AuraEnabled
+    public static list<Lead> getLeadlists(){
+        
+        return [Select id, Name,Company,Phone,Email,Status from Lead limit 15];
+        
+    }
+    @AuraEnabled
+    public static void getLeadupdatedlist(Lead L){
+        
+        insert L ;
+    }
+    @AuraEnabled
+    public static void deleteLead(Id LId)
+    {
+        Lead LeadList = [Select Id from Lead where Id =: LId];
+        delete LeadList;
+    }
+    @AuraEnabled
+    public static list<Lead> getAccountList(){
+        List<Lead> accList= [Select Id, Name,Company,Phone,Email,Status From Lead ];
+        if(accList != null && accList.size()>0){
+            return accList;
+        }
+        else{return null;}	
+    }
+    @auraEnabled
+    public static void updation(Id lds)
+    {
+        Lead ldsList = [Select FirstName,LastName,Id from Lead where Id =: lds];
+        update ldsList;
+    }
+}
