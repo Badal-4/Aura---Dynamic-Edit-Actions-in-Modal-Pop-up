@@ -1,0 +1,63 @@
+<aura:component
+                controller="LeadController"
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global"
+                >
+    <aura:attribute name="bShowModal" type="boolean" default="false"/>
+    <aura:attribute name="lds" type="Id"/>
+    <aura:attribute name="recordList" type="List" />
+    <aura:attribute name="columns" type="List" />
+    <aura:attribute name="sortedBy" type="String" default="Name" />
+    <aura:attribute name="sortedDirection" type="string" default="asc" />
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+    
+    <lightning:layout multipleRows="true" horizontalAlign="center">
+        <lightning:layoutItem padding="around-small" size="12">
+            <lightning:datatable
+                                 keyField="id"
+                                 data="{! v.recordList}"
+                                 columns="{! v.columns}"
+                                 hideCheckboxColumn="false"
+                                 onsort="{!c.updateSorting}"
+                                 sortedBy="{!v.sortedBy}"
+                                 sortedDirection="{!v.sortedDirection}"
+                                 onrowaction="{!c.handleRowAction}"
+                                 onedit="{!c.editRecord}"
+                                 />
+        </lightning:layoutItem>
+    </lightning:layout>
+        <div
+         aria-hidden="false"
+         id="editAccSectionModal"
+         role="dialog"
+         class="slds-modal slds-modal–large slds-fade-in-open"
+         style="display:none;"
+         >
+        <div class="slds-modal__container">
+   
+            <aura:if isTrue="{!v.bShowModal}">
+            <div class="slds-modal__content">
+                     <div>
+                    <div class="slds-form-element">
+                        <lightning:recordEditForm recordId="{!v.lds}" objectApiName="Lead">
+        <lightning:messages />
+       
+        <lightning:inputField fieldName="FirstName" />
+        <lightning:inputField fieldName="LastName" />
+        <lightning:inputField fieldName="Company" />
+        <lightning:button class="slds-m-top_small" variant="brand" type="submit" name="update" label="Update" />
+                            <lightning:button class="slds-m-top_small" variant="destructive" type="Cancel" label="Cancel" onclick="{!c.doCancel}"/>
+    </lightning:recordEditForm>
+                    </div>
+                   
+                   
+                </div>
+            </div>
+           
+                       </aura:if>
+
+                    </div>
+                </div>
+           
+
+</aura:component>
